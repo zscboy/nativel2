@@ -1,4 +1,4 @@
 ## Usage
 ```console
-go build -o ./build/gol2.a -buildmode=c-archive .
+go build -o ./build/libgol2.so -buildmode=c-shared .
 ```

@@ -1,5 +1,7 @@
 # Miscellaneous
 *.a
+*.so
 *.h
+*.dll
 
 build/

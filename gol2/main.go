@@ -42,7 +42,7 @@ EXIT:
 }
 
 //export StartDaemon
-func StartDaemon(jsonStr string) *C.char {
+func StartDaemon(jsonStrPtr *C.char) *C.char {
 	var err error
 	var resultJson []byte
 
@@ -60,6 +60,7 @@ func StartDaemon(jsonStr string) *C.char {
 		ConfigPath string `json:configPath`
 	}{};
 
+	jsonStr := C.GoString(jsonStrPtr)
 	err = json.Unmarshal([]byte(jsonStr), &args)
 	if err != nil {
 		result.Msg = fmt.Sprintf("marshal input args failed:%v", err)
@@ -163,7 +164,7 @@ func DaemonVersion() *C.char {
 }
 
 //export Sign
-func Sign(jsonStr string) *C.char {
+func Sign(jsonStrPtr *C.char) *C.char {
 	var resultJson []byte
 	var err error
 
@@ -181,6 +182,7 @@ func Sign(jsonStr string) *C.char {
 		Message string `json:message`
 	}{};
 	
+	jsonStr := C.GoString(jsonStrPtr)
 	err = json.Unmarshal([]byte(jsonStr), &args)
 	if err != nil {
 		result.Msg = fmt.Sprintf("marshal input args failed:%v", err)
@@ -216,9 +218,11 @@ func main() {
 	};
 
 	resultJson, _ := json.Marshal(args)
-	ret := StartDaemon(string(resultJson))
+	resultJsonPtr := C.CString(string(resultJson))
+	ret := StartDaemon(resultJsonPtr)
 	retStr := C.GoString(ret)
 	C.free(unsafe.Pointer(ret))
+	C.free(unsafe.Pointer(resultJsonPtr))
 
 	fmt.Printf("startDaemon result:%s\n", retStr)
 
