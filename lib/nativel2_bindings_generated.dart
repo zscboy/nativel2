@@ -8,7 +8,7 @@
 // ignore_for_file: type=lint
 import 'dart:ffi' as ffi;
 
-/// Bindings for `src/nativel2.h`.
+/// Bindings for `'src/gol2/build/libgol2.h'`.
 ///
 /// Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
 ///
@@ -27,62 +27,62 @@ class Nativel2Bindings {
           lookup)
       : _lookup = lookup;
 
-  ffi.Pointer<ffi.Char> startDaemon(
-    ffi.Pointer<ffi.Char> jsonArgs,
+  ffi.Pointer<ffi.Char> StartDaemon(
+    ffi.Pointer<ffi.Char> jsonStrPtr,
   ) {
-    return _startDaemon(
-      jsonArgs,
+    return _StartDaemon(
+      jsonStrPtr,
     );
   }
 
-  late final _startDaemonPtr = _lookup<
+  late final _StartDaemonPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<ffi.Char>)>>('startDaemon');
-  late final _startDaemon = _startDaemonPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+              ffi.Pointer<ffi.Char>)>>('StartDaemon');
+  late final _StartDaemon = _StartDaemonPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
-  ffi.Pointer<ffi.Char> stopDaemon() {
-    return _stopDaemon();
+  ffi.Pointer<ffi.Char> StopDaemon() {
+    return _StopDaemon();
   }
 
-  late final _stopDaemonPtr =
+  late final _StopDaemonPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
-          'stopDaemon');
-  late final _stopDaemon =
-      _stopDaemonPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+          'StopDaemon');
+  late final _StopDaemon =
+      _StopDaemonPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
-  ffi.Pointer<ffi.Char> daemonState() {
-    return _daemonState();
+  ffi.Pointer<ffi.Char> DaemonState() {
+    return _DaemonState();
   }
 
-  late final _daemonStatePtr =
+  late final _DaemonStatePtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
-          'daemonState');
-  late final _daemonState =
-      _daemonStatePtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+          'DaemonState');
+  late final _DaemonState =
+      _DaemonStatePtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
-  ffi.Pointer<ffi.Char> daemonVersion() {
-    return _daemonVersion();
+  ffi.Pointer<ffi.Char> DaemonVersion() {
+    return _DaemonVersion();
   }
 
-  late final _daemonVersionPtr =
+  late final _DaemonVersionPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
-          'daemonVersion');
-  late final _daemonVersion =
-      _daemonVersionPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+          'DaemonVersion');
+  late final _DaemonVersion =
+      _DaemonVersionPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
-  ffi.Pointer<ffi.Char> sign(
-    ffi.Pointer<ffi.Char> jsonArgs,
+  ffi.Pointer<ffi.Char> Sign(
+    ffi.Pointer<ffi.Char> jsonStrPtr,
   ) {
-    return _sign(
-      jsonArgs,
+    return _Sign(
+      jsonStrPtr,
     );
   }
 
-  late final _signPtr = _lookup<
+  late final _SignPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('sign');
-  late final _sign = _signPtr
-      .asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('Sign');
+  late final _Sign = _SignPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 }

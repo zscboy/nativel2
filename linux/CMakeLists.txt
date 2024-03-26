@@ -5,11 +5,19 @@ cmake_minimum_required(VERSION 3.10)
 
 # Project-level configuration.
 set(PROJECT_NAME "nativel2")
-project(${PROJECT_NAME} LANGUAGES CXX)
+project(${PROJECT_NAME} LANGUAGES C)
 
 # Invoke the build for native code shared with the other target platforms.
 # This can be changed to accommodate different builds.
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src" "${CMAKE_CURRENT_BINARY_DIR}/shared")
+#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../src" "${CMAKE_CURRENT_BINARY_DIR}/shared")
+
+set(GOLIB ${CMAKE_CURRENT_SOURCE_DIR}/../src/gol2/build/libgol2.so)
+
+add_library(nativel2 SHARED IMPORTED GLOBAL)
+set_target_properties(nativel2
+  PROPERTIES
+  IMPORTED_LOCATION ${GOLIB}
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an

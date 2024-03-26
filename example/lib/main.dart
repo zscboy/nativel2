@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'nativel2.dart' as nativel2;
+import 'package:nativel2/nativel2.dart' as nativel2;
 
 void main() {
   runApp(const MyApp());

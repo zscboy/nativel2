@@ -7,11 +7,11 @@ import 'package:ffi/ffi.dart';
 
 typedef JSONRsp = String;
 
-const String methodStartDaemon = "startDaemon";
-const String methodStopDaemon = "stopDaemon";
-const String methodSign = "sign";
-const String methodDaemonState = "daemonState";
-const String methodDaemonVersion = "daemonVersion";
+const String methodStartDaemon = "StartDaemon";
+const String methodStopDaemon = "StopDaemon";
+const String methodSign = "Sign";
+const String methodDaemonState = "DaemonState";
+const String methodDaemonVersion = "DaemonVersion";
 
 class JSONCallRsp {
   JSONCallRsp(this.requestID, this.rsp);
@@ -38,26 +38,26 @@ class JSONCallExecutor {
     switch (_context.method) {
       case methodStartDaemon:
         var argsPtr = _context.args!.toNativeUtf8().cast<Char>();
-        var pchar = bindings.startDaemon(argsPtr);
+        var pchar = bindings.StartDaemon(argsPtr);
         malloc.free(argsPtr);
         ptrChar = pchar;
         break;
       case methodSign:
         var argsPtr = _context.args!.toNativeUtf8().cast<Char>();
-        var pchar = bindings.sign(argsPtr);
+        var pchar = bindings.Sign(argsPtr);
         malloc.free(argsPtr);
         ptrChar = pchar;
         break;
       case methodStopDaemon:
-        var pchar = bindings.stopDaemon();
+        var pchar = bindings.StopDaemon();
         ptrChar = pchar;
         break;
       case methodDaemonState:
-        var pchar = bindings.daemonState();
+        var pchar = bindings.DaemonState();
         ptrChar = pchar;
         break;
       case methodDaemonVersion:
-        var pchar = bindings.daemonVersion();
+        var pchar = bindings.DaemonVersion();
         ptrChar = pchar;
         break;
       default:
@@ -75,7 +75,7 @@ class L2APIs {
   // singleton pattern
   static final L2APIs _instance = L2APIs._internal();
 
-  static const String _libName = 'nativel2';
+  static const String _libName = 'gol2';
 
   final DynamicLibrary _dylib = () {
     if (Platform.isMacOS || Platform.isIOS) {
