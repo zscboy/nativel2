@@ -4,29 +4,27 @@ package main
 #include <stdlib.h>
 */
 import "C"
-import "unsafe"
-
 import (
-	"fmt"
 	"encoding/json"
-	"time"
+	"fmt"
 	"sync"
+	"time"
+	"unsafe"
 )
-
 
 const (
 	VERSION string = "1.0.0"
 )
 
 var (
-	isRunning bool
-	counter int
-	lock sync.Mutex
+	isRunning     bool
+	counter       int
+	lock          sync.Mutex
 	serviceNotify chan bool
-	serviceDone chan bool
+	serviceDone   chan bool
 )
 
-func counterService(notify <- chan  bool, end chan <- bool) {
+func counterService(notify <-chan bool, end chan<- bool) {
 	ticker := time.NewTicker(3000 * time.Millisecond)
 	for {
 		select {
@@ -47,25 +45,25 @@ func StartDaemon(jsonStrPtr *C.char) *C.char {
 	var resultJson []byte
 
 	result := struct {
-		Code int `json:code`
-		Msg string `json:msg`
+		Code int    `json:code`
+		Msg  string `json:msg`
 	}{
 		Code: -1,
-		Msg: "unknown error",
+		Msg:  "unknown error",
 	}
 
 	// marshal to json object
 	args := struct {
-		LogPath string `json:logPath`
+		LogPath    string `json:logPath`
 		ConfigPath string `json:configPath`
-	}{};
+	}{}
 
 	jsonStr := C.GoString(jsonStrPtr)
 	err = json.Unmarshal([]byte(jsonStr), &args)
 	if err != nil {
 		result.Msg = fmt.Sprintf("marshal input args failed:%v", err)
 
-		goto EXIT;
+		goto EXIT
 	}
 
 	// dump to console
@@ -77,7 +75,7 @@ func StartDaemon(jsonStrPtr *C.char) *C.char {
 
 	if isRunning {
 		result.Msg = "daemon is running"
-		goto EXIT;
+		goto EXIT
 	}
 
 	serviceNotify = make(chan bool, 1)
@@ -91,6 +89,7 @@ func StartDaemon(jsonStrPtr *C.char) *C.char {
 
 EXIT:
 	resultJson, _ = json.Marshal(result)
+	fmt.Println("result ", string(resultJson))
 	return C.CString(string(resultJson))
 }
 
@@ -99,11 +98,11 @@ func StopDaemon() *C.char {
 	var resultJson []byte
 
 	result := struct {
-		Code int `json:code`
-		Msg string `json:msg`
+		Code int    `json:code`
+		Msg  string `json:msg`
 	}{
 		Code: -1,
-		Msg: "unknown error",
+		Msg:  "unknown error",
 	}
 
 	lock.Lock()
@@ -111,7 +110,7 @@ func StopDaemon() *C.char {
 
 	if !isRunning {
 		result.Msg = "daemon is not running"
-		goto EXIT;
+		goto EXIT
 	}
 
 	serviceNotify <- true
@@ -134,13 +133,13 @@ func DaemonState() *C.char {
 	var resultJson []byte
 
 	result := struct {
-		Code int `json:code`
+		Code      int  `json:code`
 		IsRunning bool `json:running`
-		Counter int `json:counter`
+		Counter   int  `json:counter`
 	}{
-		Code: 0,
+		Code:      0,
 		IsRunning: isRunning,
-		Counter: counter,
+		Counter:   counter,
 	}
 
 	resultJson, _ = json.Marshal(result)
@@ -152,10 +151,10 @@ func DaemonVersion() *C.char {
 	var resultJson []byte
 
 	result := struct {
-		Code int `json:code`
+		Code    int    `json:code`
 		Version string `json:version`
 	}{
-		Code: 0,
+		Code:    0,
 		Version: VERSION,
 	}
 
@@ -169,31 +168,31 @@ func Sign(jsonStrPtr *C.char) *C.char {
 	var err error
 
 	result := struct {
-		Code int `json:code`
-		Msg string `json:msg`
+		Code int    `json:code`
+		Msg  string `json:msg`
 		Hash string `json:hash`
 	}{
 		Code: -1,
-		Msg: "unknown error",
+		Msg:  "unknown error",
 	}
 
 	// marshal to json object
 	args := struct {
 		Message string `json:message`
-	}{};
-	
+	}{}
+
 	jsonStr := C.GoString(jsonStrPtr)
 	err = json.Unmarshal([]byte(jsonStr), &args)
 	if err != nil {
 		result.Msg = fmt.Sprintf("marshal input args failed:%v", err)
 
-		goto EXIT;
+		goto EXIT
 	}
 
 	if len(args.Message) == 0 {
 		result.Msg = "input message is empty"
 
-		goto EXIT;
+		goto EXIT
 	}
 
 	// dump to console
@@ -208,14 +207,19 @@ EXIT:
 	return C.CString(string(resultJson))
 }
 
+//export FreeCCtring
+func FreeCCtring(jsonStrPtr *C.char) {
+	C.free(unsafe.Pointer(jsonStrPtr))
+}
+
 func main() {
 	args := struct {
-		LogPath string `json:logPath`
+		LogPath    string `json:logPath`
 		ConfigPath string `json:configPath`
 	}{
-		LogPath: "/var/lib/gol2.log",
+		LogPath:    "/var/lib/gol2.log",
 		ConfigPath: "/var/lib/gol2.toml",
-	};
+	}
 
 	resultJson, _ := json.Marshal(args)
 	resultJsonPtr := C.CString(string(resultJson))
@@ -226,7 +230,7 @@ func main() {
 
 	fmt.Printf("startDaemon result:%s\n", retStr)
 
-	time.Sleep(15*time.Second)
+	time.Sleep(15 * time.Second)
 
 	ret = StopDaemon()
 	retStr = C.GoString(ret)

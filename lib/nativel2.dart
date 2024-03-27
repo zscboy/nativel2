@@ -61,11 +61,12 @@ class JSONCallExecutor {
         ptrChar = pchar;
         break;
       default:
+        // TODO: can not use FreeCCtring
         ptrChar = "{\"code\":-1000}".toNativeUtf8().cast<Char>();
     }
 
     String strResult = ptrChar.cast<Utf8>().toDartString();
-    malloc.free(ptrChar);
+    bindings.FreeCCtring(ptrChar);
 
     return JSONCallRsp(_context.requestID, strResult);
   }

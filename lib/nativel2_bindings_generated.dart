@@ -85,4 +85,18 @@ class Nativel2Bindings {
           ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('Sign');
   late final _Sign = _SignPtr.asFunction<
       ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  void FreeCCtring(
+    ffi.Pointer<ffi.Char> jsonStrPtr,
+  ) {
+    return _FreeCCtring(
+      jsonStrPtr,
+    );
+  }
+
+  late final _FreeCCtringPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Char>)>>(
+          'FreeCCtring');
+  late final _FreeCCtring =
+      _FreeCCtringPtr.asFunction<void Function(ffi.Pointer<ffi.Char>)>();
 }
